@@ -1,0 +1,12 @@
+# Rust guideline compliant 2025-05-15
+
+[package]
+name = "adapters-notification"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+domain = { path = "../domain" }
+
+[lints]
+workspace = true

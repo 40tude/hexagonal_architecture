@@ -1,0 +1,16 @@
+# Rust guideline compliant 2025-05-15
+
+[package]
+name = "app"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+domain = { path = "../domain" }
+application = { path = "../application" }
+adapters-repository = { path = "../adapters-repository" }
+adapters-payment = { path = "../adapters-payment" }
+adapters-notification = { path = "../adapters-notification" }
+
+[lints]
+workspace = true

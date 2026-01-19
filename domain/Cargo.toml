@@ -1,0 +1,11 @@
+# Rust guideline compliant 2025-05-15
+
+[package]
+name = "domain"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
