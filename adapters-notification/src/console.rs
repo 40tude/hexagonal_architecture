@@ -1,16 +1,31 @@
-// Rust guideline compliant 2025-05-15
-//! Console notification service for testing.
+// =============================================================================
+// Console Sender - For Testing and Development
+// =============================================================================
+//
+// This adapter "sends" notifications by printing to stdout.
+// Perfect for testing and local development - no email server needed!
+//
+// Remember the Email struct from dip_02? This is its spiritual successor.
+// Same concept: implement the Sender trait with a simple implementation.
 
-use domain::{NotificationService, Order, OrderError};
+use domain::{Order, OrderError, Sender};
 
-/// Console-based notification service for testing.
+/// Console-based notification sender for testing.
+///
+/// "Sends" notifications by printing to the console.
+/// No network calls, no external services - just println!
 #[derive(Debug, Default, Clone, Copy)]
-pub struct ConsoleNotificationService;
+pub struct ConsoleSender;
 
-impl NotificationService for ConsoleNotificationService {
-    fn send_confirmation(&self, order: &Order) -> Result<(), OrderError> {
+impl Sender for ConsoleSender {
+    /// "Sends" a notification by printing to stdout.
+    ///
+    /// In production, this might call SendGrid, queue a message in RabbitMQ,
+    /// or send an SMS via Twilio. Here, it just prints. And that's enough
+    /// for testing!
+    fn send(&self, order: &Order) -> Result<(), OrderError> {
         println!(
-            "[Console] Order #{} confirmed - Total: {}",
+            "  [Console] Order #{} confirmed! Total: {}",
             order.id, order.total
         );
         Ok(())
@@ -23,8 +38,8 @@ mod tests {
     use domain::{LineItem, Money, OrderId};
 
     #[test]
-    fn console_notification_succeeds() {
-        let service = ConsoleNotificationService;
+    fn console_sender_succeeds() {
+        let sender = ConsoleSender;
         let order = Order::new(
             OrderId(1),
             vec![LineItem {
@@ -34,7 +49,7 @@ mod tests {
         )
         .unwrap();
 
-        let result = service.send_confirmation(&order);
+        let result = sender.send(&order);
 
         assert!(result.is_ok());
     }
