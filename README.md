@@ -1,4 +1,5 @@
 # Hexagonal Architecture Demo
+Readd this [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
 
 A Rust workspace demonstrating Hexagonal Architecture (Ports & Adapters) with Dependency Inversion Principle (DIP).
 
