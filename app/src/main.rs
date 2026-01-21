@@ -2,7 +2,7 @@
 // APP CRATE - The Composition Root
 // =============================================================================
 //
-// Welcome to the "composition root" - where everything comes together!
+// Welcome to the "composition root" where everything comes together!
 // This is the ONLY place in the entire workspace that knows about all crates.
 //
 // Look at Cargo.toml: we depend on EVERYTHING:
@@ -42,7 +42,7 @@ use domain::{LineItem, Money};
 fn main() {
     println!("=== Hexagonal Architecture Demo (Workspace) ===\n");
 
-    // Test data - same as always
+    // Test data: same as always
     let items = vec![
         LineItem {
             name: "Rust Programming Book".to_string(),
@@ -58,7 +58,7 @@ fn main() {
     // Configuration #1: In-Memory Adapters (Testing/Development)
     // -------------------------------------------------------------------------
     // Perfect for unit tests, local dev, CI pipelines.
-    // No external services needed - everything runs in memory.
+    // No external services needed: everything runs in memory.
     println!("--- Configuration #1: In-Memory Adapters (Testing) ---\n");
     {
         let repo = InMemoryOrderRepository::new();
@@ -149,8 +149,8 @@ fn main() {
 // The Journey Complete
 // =============================================================================
 //
-// dip_01: The problem - tight coupling
-// dip_02: The solution - trait + dependency injection
+// dip_01: The problem: tight coupling
+// dip_02: The solution: trait + dependency injection
 // dip_03: Multiple adapters (Email, SMS, Owl)
 // dip_04: Testing with mocks
 // dip_05: Hexagonal architecture (single file)

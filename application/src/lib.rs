@@ -3,7 +3,7 @@
 // =============================================================================
 //
 // Welcome to the application layer! This crate sits between the domain
-// and the adapters. It orchestrates USE CASES - the things your application
+// and the adapters. It orchestrates USE CASES, the things your application
 // actually DOES.
 //
 // In dip_02, OrderService was inside the domain module.
@@ -13,7 +13,7 @@
 // WHAT'S THE DIFFERENCE FROM DOMAIN?
 // ----------------------------------
 // Domain = WHAT things ARE (Order, Money, business rules)
-// Application = WHAT HAPPENS (place order, get order - use cases)
+// Application = WHAT HAPPENS (place order, get order, use cases)
 //
 // Think restaurant analogy:
 // - Domain = recipes, ingredients, cooking techniques
@@ -45,7 +45,7 @@ use domain::{LineItem, Order, OrderError, OrderId, OrderRepository, PaymentGatew
 /// Application service for order operations.
 ///
 /// Orchestrates domain logic using injected port implementations.
-/// This is where use cases live - the "what happens when" of your app.
+/// This is where use cases live: the "what happens when" of your app.
 ///
 /// Generic over:
 /// - `R`: Repository adapter (where orders are stored)
@@ -121,7 +121,7 @@ where
 
         // Steps 3-5: Orchestrate external operations
         // Each call goes through a port to an adapter.
-        // We don't know what adapter - and we don't care!
+        // We don't know what adapter and we don't care!
         self.payment.charge(order.total)?;
         self.repository.save(&order)?;
         self.sender.send(&order)?;

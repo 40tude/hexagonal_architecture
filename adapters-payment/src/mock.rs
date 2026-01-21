@@ -7,8 +7,8 @@
 //
 // In a more sophisticated test setup, you might also have:
 // - FailingPaymentGateway (always fails)
-// - FlakeyPaymentGateway (fails randomly - for chaos testing)
-// - SlowPaymentGateway (adds delays - for timeout testing)
+// - FlakeyPaymentGateway (fails randomly: for chaos testing)
+// - SlowPaymentGateway (adds delays: for timeout testing)
 //
 // Each helps test different scenarios without real payment APIs.
 
@@ -24,7 +24,7 @@ pub struct MockPaymentGateway;
 impl PaymentGateway for MockPaymentGateway {
     /// "Charges" the amount by printing to stdout.
     ///
-    /// Returns Ok(()) always - the happy path.
+    /// Returns Ok(()) always: the happy path.
     fn charge(&self, amount: Money) -> Result<(), OrderError> {
         println!("  [Mock] Charging {amount}");
         Ok(())

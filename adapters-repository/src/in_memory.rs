@@ -8,7 +8,7 @@
 //
 // WHY USE THIS?
 // -------------
-// 1. Unit tests run fast - no database setup
+// 1. Unit tests run fast: no database setup
 // 2. CI/CD pipelines don't need database containers
 // 3. Local development works without infrastructure
 // 4. Demos work anywhere

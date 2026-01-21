@@ -2,7 +2,7 @@
 // DOMAIN CRATE - The Sacred Core of Your Application
 // =============================================================================
 //
-// Welcome! This is the domain crate - the heart of hexagonal architecture.
+// Welcome! This is the domain crate, the heart of hexagonal architecture.
 // Everything else in this workspace depends on this crate, but this crate
 // depends on NOTHING else (except std).
 //
@@ -10,7 +10,7 @@
 // Here, it's a full-fledged Rust CRATE. What's the difference?
 //
 // 1. ENFORCED ISOLATION: Cargo.toml has no internal dependencies.
-//    You literally CAN'T import adapters here - they're not in dependencies!
+//    You literally CAN'T import adapters here (they're not in dependencies)
 //
 // 2. INDEPENDENT COMPILATION: Change an adapter? Domain doesn't recompile.
 //    This matters in large projects where build times add up.
@@ -38,7 +38,7 @@ use std::fmt;
 // =============================================================================
 //
 // Value objects are immutable types defined by their value, not identity.
-// Two Money(100) are interchangeable - they represent the same thing.
+// Two Money(100) are interchangeable, they represent the same thing.
 //
 // We use newtype wrappers (struct OrderId(u32)) instead of raw primitives.
 // This gives us type safety: you can't pass a CustomerId where OrderId is expected.
@@ -59,7 +59,7 @@ impl fmt::Display for OrderId {
 /// Monetary value in cents to avoid floating-point precision issues.
 ///
 /// $49.99 is stored as `Money(4999)`. This is a common pattern in financial
-/// applications - never use f64 for money!
+/// applications (never use f64 for money!)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Money(pub u32);
 
@@ -87,7 +87,7 @@ impl fmt::Display for Money {
 // Entities
 // =============================================================================
 //
-// Entities have identity - two orders with the same items are still different
+// Entities have identity: two orders with the same items are still different
 // orders if they have different IDs. Unlike value objects, entities are mutable
 // over their lifecycle (though we keep Order simple here).
 
@@ -125,7 +125,7 @@ impl Order {
             return Err(OrderError::InvalidOrder);
         }
 
-        // Calculate total - pure business logic
+        // Calculate total: pure business logic
         let total = Money(items.iter().map(|item| item.price.0).sum());
 
         Ok(Self { id, items, total })
@@ -237,9 +237,9 @@ pub trait Sender {
 // Tests
 // =============================================================================
 //
-// Domain tests are PURE. No mocks needed! We're testing business logic
+// Domain tests are PURE. No mocks needed. We're testing business logic
 // with plain Rust values. This is one of the biggest benefits of a clean
-// domain layer - tests are simple and fast.
+// domain layer. Tests are simple and fast.
 
 #[cfg(test)]
 mod tests {
