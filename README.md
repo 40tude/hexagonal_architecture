@@ -1,5 +1,6 @@
 # Hexagonal Architecture Demo
-Readd this [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
+
+Read [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
 
 A Rust workspace demonstrating Hexagonal Architecture (Ports & Adapters) with Dependency Inversion Principle (DIP).
 
@@ -36,7 +37,7 @@ A Rust workspace demonstrating Hexagonal Architecture (Ports & Adapters) with De
 ## Workspace Structure
 
 ```
-043_hexagonal_architecture/
+037_solid_hexagonal_architecture/
 ├── domain/                     # Core business logic (no dependencies)
 │   └── src/lib.rs              # OrderId, Money, Order, port traits
 ├── application/                # Use cases (depends on domain)
@@ -51,8 +52,8 @@ A Rust workspace demonstrating Hexagonal Architecture (Ports & Adapters) with De
 │       └── stripe.rs           # StripePaymentGateway (simulated)
 ├── adapters-notification/      # Notification implementations
 │   └── src/
-│       ├── console.rs          # ConsoleNotificationService
-│       └── sendgrid.rs         # SendGridNotificationService (simulated)
+│       ├── console.rs          # ConsoleSender
+│       └── sendgrid.rs         # SendGridSender (simulated)
 └── app/                        # Application entry point
     └── src/main.rs             # Demo with swappable adapters
 ```
@@ -71,6 +72,23 @@ Adapters implement domain-defined traits (ports), not the other way around. This
 - Adapters can be swapped without changing business logic
 - Testing is simplified via mock adapters
 
+## Port Traits (defined in domain)
+
+```rust
+pub trait OrderRepository {
+    fn save(&mut self, order: &Order) -> Result<(), OrderError>;
+    fn find(&self, id: OrderId) -> Result<Option<Order>, OrderError>;
+}
+
+pub trait PaymentGateway {
+    fn charge(&self, amount: Money) -> Result<(), OrderError>;
+}
+
+pub trait Sender {
+    fn send(&self, order: &Order) -> Result<(), OrderError>;
+}
+```
+
 ## Usage
 
 ```bash
@@ -87,25 +105,41 @@ cargo run -p app
 ## Expected Output
 
 ```
-=== Hexagonal Architecture Demo ===
+=== Hexagonal Architecture Demo (Workspace) ===
 
 --- Configuration #1: In-Memory Adapters (Testing) ---
 
-[Mock] Charging $179.98
-[InMemory] Saving order #OrderId(1)
-[Console] Order #OrderId(1) confirmed - Total: $179.98
+  [Mock] Charging $179.98
+  [InMemory] Saving order #OrderId(1)
+  [Console] Order #OrderId(1) confirmed! Total: $179.98
+
 Order placed successfully: OrderId(1)
 
 --- Configuration #2: External Services (Production) ---
 
-[Stripe API] POST /charges amount=$179.98
-[Postgres] INSERT INTO orders VALUES (OrderId(1), ...)
-[SendGrid API] POST /mail/send to=customer@example.com subject='Order #OrderId(1) Confirmed'
+  [Stripe API] POST /charges amount=$179.98
+  [Postgres] INSERT INTO orders VALUES (OrderId(1), ...)
+  [SendGrid API] Sending email: 'Order #OrderId(1) Confirmed'
+
 Order placed successfully: OrderId(1)
 
-[Postgres] SELECT * FROM orders WHERE id = OrderId(1)
+  [Postgres] SELECT * FROM orders WHERE id = OrderId(1)
 Retrieved order: 2 items, total $179.98
 ```
+
+## Related Examples
+
+This workspace is part of a series demonstrating DIP evolution. Again, read [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
+
+| Example | Description |
+|---------|-------------|
+| dip_01 | The problem: tight coupling |
+| dip_02 | The solution: trait + dependency injection |
+| dip_03 | Multiple adapters (Email, SMS, Owl) |
+| dip_04 | Testing with mocks |
+| dip_05 | Hexagonal architecture (single file) |
+| dip_06 | Modular organization (folders) |
+| **here** | Full workspace with independent crates |
 
 ## License
 
