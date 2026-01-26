@@ -7,4 +7,4 @@
 
 ## Ideas
 
-[Add your ideas here]
+[Add our ideas here]

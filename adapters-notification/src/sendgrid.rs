@@ -3,7 +3,7 @@
 // =============================================================================
 //
 // This adapter simulates sending emails via SendGrid's API.
-// In a real project, you'd add sendgrid-rs to Cargo.toml and make actual
+// In a real project, we'd add sendgrid-rs to Cargo.toml and make actual
 // API calls here.
 //
 // The key point: the APPLICATION layer doesn't know this is SendGrid.
@@ -23,7 +23,7 @@ use domain::{Order, OrderError, Sender};
 #[derive(Debug, Default, Clone, Copy)]
 pub struct SendGridSender;
 
-// In a real implementation, you'd have:
+// In a real implementation, we'd have:
 //
 // pub struct SendGridSender {
 //     api_key: String,

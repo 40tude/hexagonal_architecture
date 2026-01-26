@@ -12,8 +12,8 @@
 // - adapters-payment
 // - adapters-notification
 //
-// This is intentional! The composition root is where you WIRE UP the application.
-// It's where you decide: "For this run, use PostgreSQL, Stripe, and SendGrid."
+// This is intentional! The composition root is where we WIRE UP the application.
+// It's where we decide: "For this run, use PostgreSQL, Stripe, and SendGrid."
 // Or: "For tests, use InMemory, MockPayment, and ConsoleSender."
 //
 // IN DIP_06 VS HERE:
@@ -61,12 +61,12 @@ fn main() {
     // No external services needed: everything runs in memory.
     println!("--- Configuration #1: In-Memory Adapters (Testing) ---\n");
     {
-        let repo = InMemoryOrderRepository::new();
+        let mut repo = InMemoryOrderRepository::new();
         let payment = MockPaymentGateway;
         let sender = ConsoleSender;
 
         // Dependency Injection: we choose the adapters, service doesn't care!
-        let mut service = OrderService::new(repo, payment, sender);
+        let mut service = OrderService::new(&mut repo, &payment, &sender);
 
         match service.place_order(items.clone()) {
             Ok(order) => println!("\nOrder placed successfully: {}\n", order.id),
@@ -78,15 +78,15 @@ fn main() {
     // Configuration #2: External Services (Production)
     // -------------------------------------------------------------------------
     // Same OrderService, completely different adapters.
-    // In a real app, you'd choose based on environment variables or config.
+    // In a real app, we'd choose based on environment variables or config.
     println!("--- Configuration #2: External Services (Production) ---\n");
     {
-        let repo = PostgresOrderRepository::new();
+        let mut repo = PostgresOrderRepository::new();
         let payment = StripePaymentGateway;
         let sender = SendGridSender;
 
         // Same OrderService, production adapters!
-        let mut service = OrderService::new(repo, payment, sender);
+        let mut service = OrderService::new(&mut repo, &payment, &sender);
 
         match service.place_order(items.clone()) {
             Ok(order) => {
@@ -157,4 +157,4 @@ fn main() {
 // dip_06: Modular organization (folders)
 // HERE:   Full workspace with independent crates
 //
-// You've seen DIP evolve from concept to production-ready architecture!
+// We have seen DIP evolve from concept to production-ready architecture!

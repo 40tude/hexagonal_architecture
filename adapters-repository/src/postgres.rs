@@ -3,7 +3,7 @@
 // =============================================================================
 //
 // This adapter simulates a PostgreSQL database.
-// In production, you'd add sqlx or diesel to Cargo.toml and execute real queries.
+// In production, we'd add sqlx or diesel to Cargo.toml and execute real queries.
 //
 // ERROR TRANSLATION:
 // ------------------

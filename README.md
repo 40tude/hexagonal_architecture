@@ -64,7 +64,7 @@ The key insight is that **dependencies point inward**:
 
 1. **domain**: Zero dependencies. Defines business entities and port traits.
 2. **application**: Depends only on domain. Contains use cases.
-3. **adapters-***: Each depends only on domain. Implements port traits.
+3. **adapters-***: Repository, Payment and Notification. Each depends only on domain. Implements port traits.
 4. **app**: Composes everything. Wires adapters to application services.
 
 Adapters implement domain-defined traits (ports), not the other way around. This means:
@@ -129,7 +129,7 @@ Retrieved order: 2 items, total $179.98
 
 ## Related Examples
 
-This workspace is part of a series demonstrating DIP evolution. Again, read [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
+Again, this workspace is part of a series demonstrating DIP evolution. Read [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
 
 | Example | Description |
 |---------|-------------|

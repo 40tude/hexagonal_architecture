@@ -3,7 +3,7 @@
 // =============================================================================
 //
 // This adapter simulates calling Stripe's payment API.
-// In production, you'd add stripe-rust to Cargo.toml and make real API calls.
+// In production, we'd add stripe-rust to Cargo.toml and make real API calls.
 //
 // The adapter's job is to TRANSLATE between:
 // - Domain concepts (Money, OrderError)

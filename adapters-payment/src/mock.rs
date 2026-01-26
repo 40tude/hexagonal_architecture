@@ -3,9 +3,9 @@
 // =============================================================================
 //
 // This adapter always succeeds. It's the "happy path" mock.
-// Perfect for testing the normal flow of your application.
+// Perfect for testing the normal flow of our application.
 //
-// In a more sophisticated test setup, you might also have:
+// In a more sophisticated test setup, we might also have:
 // - FailingPaymentGateway (always fails)
 // - FlakeyPaymentGateway (fails randomly: for chaos testing)
 // - SlowPaymentGateway (adds delays: for timeout testing)

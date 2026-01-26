@@ -3,7 +3,7 @@
 // =============================================================================
 //
 // Welcome to the application layer! This crate sits between the domain
-// and the adapters. It orchestrates USE CASES, the things your application
+// and the adapters. It orchestrates USE CASES, the things our application
 // actually DOES.
 //
 // In dip_02, OrderService was inside the domain module.
@@ -45,14 +45,14 @@ use domain::{LineItem, Order, OrderError, OrderId, OrderRepository, PaymentGatew
 /// Application service for order operations.
 ///
 /// Orchestrates domain logic using injected port implementations.
-/// This is where use cases live: the "what happens when" of your app.
+/// This is where use cases live: the "what happens when" of our app.
 ///
 /// Generic over:
 /// - `R`: Repository adapter (where orders are stored)
 /// - `P`: Payment adapter (how payments are processed)
 /// - `N`: Notification adapter (how customers are notified)
 #[derive(Debug)]
-pub struct OrderService<R, P, N>
+pub struct OrderService<'a, R, P, N>
 where
     R: OrderRepository,
     P: PaymentGateway,
@@ -61,16 +61,16 @@ where
     // These fields hold our adapters, but we only know them by their traits!
     // We don't know if `repository` is PostgreSQL or InMemory.
     // We don't care! That's abstraction at work.
-    repository: R,
-    payment: P,
-    sender: N,
+    repository: &'a mut R,
+    payment: &'a P,
+    sender: &'a N,
 
     // Application state - not business logic.
     // In a real app, IDs would come from the database or UUID generator.
     next_id: u32,
 }
 
-impl<R, P, N> OrderService<R, P, N>
+impl<'a, R, P, N> OrderService<'a, R, P, N>
 where
     R: OrderRepository,
     P: PaymentGateway,
@@ -86,7 +86,7 @@ where
     /// - Testing: pass mock adapters, no real database needed
     /// - Flexibility: swap PostgreSQL for MongoDB without changing this code
     /// - Clarity: dependencies are explicit in the function signature
-    pub fn new(repository: R, payment: P, sender: N) -> Self {
+    pub fn new(repository: &'a mut R, payment: &'a P, sender: &'a N) -> Self {
         Self {
             repository,
             payment,
@@ -277,8 +277,8 @@ mod tests {
 // - Infrastructure details (SQL, HTTP, etc.)
 //
 // This isolation means:
-// - You can test without infrastructure
-// - You can swap adapters without changing application code
+// - We can test without infrastructure
+// - We can swap adapters without changing application code
 // - The dependency graph is clean and predictable
 //
 // Next: check out the adapter crates to see concrete implementations!

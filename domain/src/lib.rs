@@ -1,22 +1,23 @@
 // =============================================================================
-// DOMAIN CRATE - The Sacred Core of Your Application
+// DOMAIN CRATE - The Sacred Core of the Application
 // =============================================================================
 //
 // Welcome! This is the domain crate, the heart of hexagonal architecture.
 // Everything else in this workspace depends on this crate, but this crate
 // depends on NOTHING else (except std).
 //
-// In dip_06, domain was a module inside a single binary.
+// In dip_06 (https://github.com/40tude/solid_test/tree/main/dip_06/src), domain
+// was a module inside a single binary.
 // Here, it's a full-fledged Rust CRATE. What's the difference?
 //
 // 1. ENFORCED ISOLATION: Cargo.toml has no internal dependencies.
-//    You literally CAN'T import adapters here (they're not in dependencies)
+//    We literally CAN'T import adapters here (they're not in dependencies)
 //
 // 2. INDEPENDENT COMPILATION: Change an adapter? Domain doesn't recompile.
 //    This matters in large projects where build times add up.
 //
-// 3. PUBLISHABLE: You could publish this crate to crates.io independently.
-//    Your domain logic becomes a reusable library!
+// 3. PUBLISHABLE: We could publish this crate to crates.io independently.
+//    Our domain logic becomes a reusable library!
 //
 // 4. EXPLICIT VERSIONING: Each crate can have its own version.
 //    "Domain v2.0 with breaking changes" while adapters stay on v1.x.
@@ -41,7 +42,7 @@ use std::fmt;
 // Two Money(100) are interchangeable, they represent the same thing.
 //
 // We use newtype wrappers (struct OrderId(u32)) instead of raw primitives.
-// This gives us type safety: you can't pass a CustomerId where OrderId is expected.
+// This gives us type safety: we can't pass a CustomerId where OrderId is expected.
 
 /// A unique identifier for an order.
 ///
@@ -143,6 +144,9 @@ impl Order {
 // We DON'T have "DatabaseConnectionError" or "HttpTimeout".
 // Those are adapter errors that get TRANSLATED into domain errors.
 // The domain never sees sqlx::Error or reqwest::Error.
+//
+// More information available here:
+// https://www.40tude.fr/docs/06_programmation/rust/016_errors/errors_02.html
 
 /// Domain errors for order operations.
 #[derive(Debug)]
@@ -289,7 +293,7 @@ mod tests {
 // Key Takeaway
 // =============================================================================
 //
-// This crate is the CENTER of your architecture. It:
+// This crate is the CENTER of our architecture. It:
 // - Defines business entities and rules
 // - Defines ports (traits) that describe external needs
 // - Has ZERO dependencies on other workspace crates
