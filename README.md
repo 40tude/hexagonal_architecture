@@ -1,13 +1,21 @@
 # Hexagonal Architecture Demo
 
-Read [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_01.html) of this set of posts about SOLID.
 
 A Rust workspace demonstrating Hexagonal Architecture (Ports & Adapters) with Dependency Inversion Principle (DIP).
+
+
 
 > **Warning (Linux/macOS users):** The .cargo/ folder contains Windows-specific configuration. Delete or rename before building:
 > ```bash
 > rm -rf .cargo   # or: mv .cargo .cargo.bak
 > ```
+
+
+* Read this page if you look for a [Beginner’s Guide to Hexagonal Architecture](https://www.40tude.fr/docs/06_programmation/rust/024_hexagonal/hexagonal_lite.html) in Rust
+* You can learn more about SOLID and DIP with [Episode 04](https://www.40tude.fr/docs/06_programmation/rust/022_solid/solid_04.html) of this set of posts about SOLID.
+
+
+
 
 ## Architecture Overview
 
@@ -140,6 +148,42 @@ Again, this workspace is part of a series demonstrating DIP evolution. Read [Epi
 | dip_05 | Hexagonal architecture (single file) |
 | dip_06 | Modular organization (folders) |
 | **here** | Full workspace with independent crates |
+
+
+## Is This a Modular Monolith?
+
+Yes because the project demonstrates a "textbook" Hexagonal Architecture with (I hope) a clean module separation. It's modular (independent crates with enforced boundaries) and monolithic (single deployable binary). The architectural patterns shown are production-ready and scalable.
+
+More explanation below:
+
+### 1. Single Deployment Unit (Monolith criterion Ok)
+- All 6 crates compile into one binary via `cargo run -p app`
+- No microservice separation, no network boundaries between components
+
+### 2. Module Boundaries (Modular criterion Ok)
+- 6 independent crates with explicit Cargo dependencies
+- Strict dependency inversion: all adapters depend only on domain, never on each other
+- Dependency direction enforced by compiler: `app → application → domain ← adapters-*`
+
+### 3. Domain Isolation (Ok)
+- `domain` crate has zero external dependencies
+- Port traits (`OrderRepository`, `PaymentGateway`, `Sender`) define contracts
+- Adapters implement ports without domain knowing about infrastructure
+
+### 4. Swappable Components (Ok)
+- `app/src/main.rs` demonstrates two configurations:
+- Testing: `InMemoryOrderRepository` + `MockPaymentGateway` + `ConsoleSender`
+- Production: `PostgresOrderRepository` + `StripePaymentGateway` + `SendGridSender`
+
+### Caveats
+This is a demonstration-scale modular monolith. Production systems would typically include:
+- Multiple bounded contexts (not just Order)
+- Async traits for I/O operations
+- Inter-domain communication mechanisms
+- Shared infrastructure crate (logging, config)
+
+
+
 
 ## License
 
